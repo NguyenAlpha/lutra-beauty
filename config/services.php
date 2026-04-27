@@ -35,4 +35,14 @@ return [
         ],
     ],
 
+    'facebook' => [
+        'psid'               => env('FACEBOOK_PSID'),
+        'page_access_token'  => env('FACEBOOK_PAGE_ACCESS_TOKEN'),
+    ],
+
+    'admin' => [
+        'email'    => env('ADMIN_EMAIL', 'admin@lutrabeauty.com'),
+        'password' => env('ADMIN_PASSWORD', 'lutra@2024'),
+    ],
+
 ];

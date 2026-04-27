@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>LUTRA Beauty – Nail & Beauty Studio TP.HCM</title>
+<link rel="icon" type="image/png" href="/images/uploads/612365143_1328013149347255_1293637779033925772_n.png">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
   :root {
@@ -309,6 +310,14 @@
     border-color: var(--mint-dark);
   }
   .form-group textarea { resize: none; height: 80px; }
+  .form-group.error input, .form-group.error select, .form-group.error textarea {
+    border-color: #e05c5c;
+  }
+  .form-error {
+    font-size: 11px; color: #e05c5c; margin-top: 5px;
+    display: none; letter-spacing: 0.02em;
+  }
+  .form-group.error .form-error { display: block; }
   .form-submit {
     width: 100%; padding: 15px; background: var(--mint-dark); color: white;
     border: none; border-radius: 50px; cursor: pointer;
@@ -624,7 +633,7 @@
 <!-- ABOUT STRIP -->
 <div id="about">
   <div class="about-stat fade-up">
-    <div class="about-stat-num">5+</div>
+    <div class="about-stat-num">4+</div>
     <div class="about-stat-label">Năm kinh nghiệm</div>
   </div>
   <div class="about-divider"></div>
@@ -634,7 +643,7 @@
   </div>
   <div class="about-divider"></div>
   <div class="about-stat fade-up">
-    <div class="about-stat-num">5K+</div>
+    <div class="about-stat-num">1500+</div>
     <div class="about-stat-label">Khách hàng tin tưởng</div>
   </div>
   <div class="about-divider"></div>
@@ -753,7 +762,7 @@
       <div class="info-icon">📍</div>
       <div>
         <div class="info-label">Chi Nhánh 1</div>
-        <div class="info-value">121 Lý Chiêu Hoàng, P.10, Q.6</div>
+        <div class="info-value">121 Lý Chiêu Hoàng, P.10, Phường Bình Phú (Q.6 cũ)</div>
       </div>
     </div>
     <div class="info-item">
@@ -781,19 +790,22 @@
   <div class="booking-form fade-up" id="booking-form-wrapper">
     <div class="form-title">Đặt Lịch Hẹn</div>
     <form id="bookingForm" onsubmit="submitForm(event)">
+      @csrf
       <div class="form-row">
-        <div class="form-group">
+        <div class="form-group" id="fg-name">
           <label>Họ & Tên *</label>
-          <input type="text" placeholder="Nguyễn Thị Lan" required>
+          <input type="text" name="name" placeholder="Nguyễn Thị Lan" required>
+          <span class="form-error">Vui lòng nhập họ tên (ít nhất 2 ký tự)</span>
         </div>
-        <div class="form-group">
+        <div class="form-group" id="fg-phone">
           <label>Số Điện Thoại *</label>
-          <input type="tel" placeholder="0977 000 000" required>
+          <input type="tel" name="phone" placeholder="0977 000 000" required>
+          <span class="form-error">Số điện thoại không hợp lệ (VD: 0977233338)</span>
         </div>
       </div>
-      <div class="form-group">
+      <div class="form-group" id="fg-service">
         <label>Dịch Vụ *</label>
-        <select required>
+        <select name="service" required>
           <option value="">Chọn dịch vụ...</option>
           <option>Làm Nail</option>
           <option>Phun Xăm</option>
@@ -802,35 +814,38 @@
           <option>Phun Chân Mày</option>
           <option>Combo nhiều dịch vụ</option>
         </select>
+        <span class="form-error">Vui lòng chọn dịch vụ</span>
       </div>
       <div class="form-row">
-        <div class="form-group">
+        <div class="form-group" id="fg-date">
           <label>Ngày Hẹn *</label>
-          <input type="date" required>
+          <input type="date" name="date" required>
+          <span class="form-error">Chỉ đặt lịch từ hôm nay đến tối đa 7 ngày tới</span>
         </div>
-        <div class="form-group">
+        <div class="form-group" id="fg-time">
           <label>Giờ Hẹn *</label>
-          <select required>
+          <select name="time" required>
             <option value="">Chọn giờ...</option>
-            <option>08:00</option><option>09:00</option><option>10:00</option>
+            <option>08:30</option><option>09:00</option><option>10:00</option>
             <option>11:00</option><option>13:00</option><option>14:00</option>
             <option>15:00</option><option>16:00</option><option>17:00</option>
-            <option>18:00</option><option>19:00</option>
+            <option>18:00</option><option>19:00</option><option>20:00</option>
           </select>
+          <span class="form-error">Vui lòng chọn giờ hẹn</span>
         </div>
       </div>
       <div class="form-group">
         <label>Chi Nhánh</label>
-        <select>
-          <option>CN1 – 121 Lý Chiêu Hoàng, Q.6</option>
+        <select name="branch">
+          <option>CN1 – 121 Lý Chiêu Hoàng, Phường Bình Phú (Q.6 cũ)</option>
           <option>CN2 – Akari, 77 Võ Văn Kiệt, Q.Bình Tân</option>
         </select>
       </div>
       <div class="form-group">
         <label>Ghi Chú</label>
-        <textarea placeholder="Mẫu nail yêu thích, yêu cầu đặc biệt..."></textarea>
+        <textarea name="note" placeholder="Mẫu nail yêu thích, yêu cầu đặc biệt..."></textarea>
       </div>
-      <button type="submit" class="form-submit">Xác Nhận Đặt Lịch</button>
+      <button type="submit" class="form-submit" id="formSubmitBtn">Xác Nhận Đặt Lịch</button>
     </form>
     <div class="form-success" id="formSuccess">
       <div class="form-success-icon">✓</div>
@@ -849,9 +864,9 @@
   <div class="map-info">
     <div class="map-info-title">Hệ Thống<br>Chi Nhánh</div>
     <div class="branch">
-      <div class="branch-name">Chi Nhánh 1 · Quận 6</div>
+      <div class="branch-name">Chi Nhánh 1 · Phường Bình Phú (Quận 6 cũ)</div>
       <div class="branch-addr">
-        121 Lý Chiêu Hoàng, Phường 10, Quận 6, TP.HCM
+        121 Lý Chiêu Hoàng, Phường Bình Phú (Phường 10, Quận 6 cũ), TP.HCM
         <br>
         <a href="https://maps.app.goo.gl/6foJxJbvFrqNhsmp8" target="_blank">Xem trên Google Maps →</a>
       </div>
@@ -959,14 +974,82 @@ function toggleFloat() {
   fb.classList.toggle('show');
 }
 
+// Form validation helpers
+function setError(id, show) {
+  const el = document.getElementById(id);
+  if (show) el.classList.add('error');
+  else el.classList.remove('error');
+  return show;
+}
+
+function validateForm() {
+  const name    = document.querySelector('[name="name"]').value.trim();
+  const phone   = document.querySelector('[name="phone"]').value.trim();
+  const service = document.querySelector('[name="service"]').value;
+  const date    = document.querySelector('[name="date"]').value;
+  const time    = document.querySelector('[name="time"]').value;
+
+  const localFmt = d => {
+    const y = d.getFullYear();
+    const m = String(d.getMonth() + 1).padStart(2, '0');
+    const day = String(d.getDate()).padStart(2, '0');
+    return `${y}-${m}-${day}`;
+  };
+  const now    = new Date();
+  const maxDay = new Date(now); maxDay.setDate(now.getDate() + 7);
+  const today  = localFmt(now);
+  const max    = localFmt(maxDay);
+  const phoneRe = /^(0[3|5|7|8|9])[0-9]{8}$/;
+
+  let ok = true;
+  ok = !setError('fg-name',    name.length < 2)                        && ok;
+  ok = !setError('fg-phone',   !phoneRe.test(phone.replace(/\s/g, ''))) && ok;
+  ok = !setError('fg-service', service === '')                          && ok;
+  ok = !setError('fg-date',    !date || date < today || date > max)    && ok;
+  ok = !setError('fg-time',    time === '')                             && ok;
+  return ok;
+}
+
+// Xoá lỗi khi người dùng sửa
+['name','phone','service','date','time'].forEach(field => {
+  const map = { name:'fg-name', phone:'fg-phone', service:'fg-service', date:'fg-date', time:'fg-time' };
+  const el = document.querySelector(`[name="${field}"]`);
+  if (el) el.addEventListener('input', () => document.getElementById(map[field]).classList.remove('error'));
+});
+
 // Form submit
-function submitForm(e) {
+async function submitForm(e) {
   e.preventDefault();
-  document.getElementById('bookingForm').style.display = 'none';
-  document.getElementById('formSuccess').style.display = 'block';
-  const notif = document.getElementById('notification');
-  notif.classList.add('show');
-  setTimeout(() => notif.classList.remove('show'), 4000);
+  if (!validateForm()) return;
+
+  const form = document.getElementById('bookingForm');
+  const btn  = document.getElementById('formSubmitBtn');
+  btn.disabled = true;
+  btn.textContent = 'Đang gửi...';
+
+  try {
+    const res  = await fetch('/booking', {
+      method: 'POST',
+      headers: { 'Accept': 'application/json' },
+      body: new FormData(form),
+    });
+    const data = await res.json();
+    if (data.success) {
+      form.style.display = 'none';
+      document.getElementById('formSuccess').style.display = 'block';
+      const notif = document.getElementById('notification');
+      notif.classList.add('show');
+      setTimeout(() => notif.classList.remove('show'), 4000);
+    } else {
+      btn.disabled = false;
+      btn.textContent = 'Xác Nhận Đặt Lịch';
+      alert('Có lỗi xảy ra, vui lòng thử lại.');
+    }
+  } catch (err) {
+    btn.disabled = false;
+    btn.textContent = 'Xác Nhận Đặt Lịch';
+    alert('Không thể kết nối, vui lòng thử lại.');
+  }
 }
 
 // Nav shadow on scroll
@@ -991,9 +1074,9 @@ function animateCounter(el, target, suffix) {
 }
 
 const counterMap = [
-  { suffix: '+', target: 5 },
+  { suffix: '+', target: 4 },
   { suffix: '',  target: 2 },
-  { suffix: 'K+', target: 5 },
+  { suffix: '+', target: 1500 },
   { suffix: '%', target: 100 },
 ];
 let countersRun = false;
@@ -1037,12 +1120,22 @@ const observer = new IntersectionObserver((entries) => {
 }, { threshold: 0.12 });
 fadeEls.forEach(el => observer.observe(el));
 
-// Set min date for booking
+// Set min/max date for booking (today → +7 days)
+// Dùng giờ local (không phải UTC) để tránh lệch múi giờ VN (UTC+7)
 const dateInput = document.querySelector('input[type="date"]');
 if (dateInput) {
-  const today = new Date().toISOString().split('T')[0];
-  dateInput.min = today;
-  dateInput.value = today;
+  const localFmt = d => {
+    const y = d.getFullYear();
+    const m = String(d.getMonth() + 1).padStart(2, '0');
+    const day = String(d.getDate()).padStart(2, '0');
+    return `${y}-${m}-${day}`;
+  };
+  const today  = new Date();
+  const maxDay = new Date(today);
+  maxDay.setDate(today.getDate() + 7);
+  dateInput.min   = localFmt(today);
+  dateInput.max   = localFmt(maxDay);
+  dateInput.value = localFmt(today);
 }
 
 // Mobile menu placeholder
