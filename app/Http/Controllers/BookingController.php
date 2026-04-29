@@ -25,9 +25,15 @@ class BookingController extends Controller
 
         $booking = Booking::create($validated);
 
-        Mail::to('nhatnguyen27042005@gmail.com')->send(new BookingMailable($booking));
-
+        // Messenger trước — không phụ thuộc email
         $this->sendMessenger($booking);
+
+        // Email sau — wrap try-catch để timeout không làm hỏng toàn bộ request
+        try {
+            Mail::to('nhatnguyen27042005@gmail.com')->send(new BookingMailable($booking));
+        } catch (\Throwable $e) {
+            Log::error('Email notification failed: ' . $e->getMessage());
+        }
 
         return response()->json(['success' => true]);
     }
@@ -52,7 +58,7 @@ class BookingController extends Controller
               . $note;
 
         try {
-            Http::post("https://graph.facebook.com/v21.0/me/messages?access_token={$token}", [
+            Http::timeout(10)->post("https://graph.facebook.com/v21.0/me/messages?access_token={$token}", [
                 'recipient' => ['id' => $psid],
                 'message'   => ['text' => $text],
             ]);
